@@ -88,15 +88,16 @@
             // продуктToolStripMenuItem
             // 
             this.продуктToolStripMenuItem.Name = "продуктToolStripMenuItem";
-            this.продуктToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
+            this.продуктToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.продуктToolStripMenuItem.Text = "Продукт";
             this.продуктToolStripMenuItem.Click += new System.EventHandler(this.продуктToolStripMenuItem_Click);
             // 
             // книгаToolStripMenuItem
             // 
             this.книгаToolStripMenuItem.Name = "книгаToolStripMenuItem";
-            this.книгаToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
+            this.книгаToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.книгаToolStripMenuItem.Text = "Книга";
+            this.книгаToolStripMenuItem.Click += new System.EventHandler(this.книгаToolStripMenuItem_Click);
             // 
             // видалитиРядокToolStripMenuItem
             // 
