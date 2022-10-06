@@ -1,8 +1,14 @@
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        private const int NumberOfColumn = 11;
+        private const int NumberOfColumn = 12;
         private bool flag;
         private Product product;
         private Book book;
@@ -10,20 +16,25 @@ namespace WinFormsApp1
         {
            
             InitializeComponent();
+            InitializeFoem();
+        }
+        private void InitializeFoem()
+        {
             dataGridView1.ColumnCount = NumberOfColumn;
-            dataGridView1.Columns[0].Name = "Назва";
-            dataGridView1.Columns[1].Name = "Ціна";
-            dataGridView1.Columns[2].Name = "Країна походження";
-            dataGridView1.Columns[3].Name = "Дата пакування";
-            dataGridView1.Columns[4].Name = "Опис";
-            dataGridView1.Columns[5].Name = "Термін придатності";
-            dataGridView1.Columns[6].Name = "Кількість";
-            dataGridView1.Columns[7].Name = "Одиниця виміру";
-            dataGridView1.Columns[8].Name = "Кількість сторінок";
-            dataGridView1.Columns[9].Name = "Видавництво";
-            dataGridView1.Columns[10].Name = "Перелік авторів";
+            dataGridView1.Columns[0].Name = "Тип продукту";
+            dataGridView1.Columns[1].Name = "Назва";
+            dataGridView1.Columns[2].Name = "Ціна";
+            dataGridView1.Columns[3].Name = "Країна походження";
+            dataGridView1.Columns[4].Name = "Дата пакування";
+            dataGridView1.Columns[5].Name = "Опис";
+            dataGridView1.Columns[6].Name = "Термін придатності";
+            dataGridView1.Columns[7].Name = "Кількість";
+            dataGridView1.Columns[8].Name = "Одиниця виміру";
+            dataGridView1.Columns[9].Name = "Кількість сторінок";
+            dataGridView1.Columns[10].Name = "Видавництво";
+            dataGridView1.Columns[11].Name = "Перелік авторів";
             NotVisiableBoxAndLabels();
-    
+
             dataGridView1.AllowUserToAddRows = false;
         }
 
@@ -35,10 +46,6 @@ namespace WinFormsApp1
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
-        }
-        private void Inizialozation()
-        {
-            dataGridView1.AllowUserToAddRows = false;
         }
 
         private void видалитиРядокToolStripMenuItem_Click(object sender, EventArgs e)
@@ -251,7 +258,7 @@ namespace WinFormsApp1
                     book.Authors=textBox4.Text;
                 }
                 RemoveDatefromTextBox();
-                dataGridView1.Rows.Add(book.Name, book.Price, book.Country, book.PackingDate, book.Description, "", "", "", book.numberOfPages, book.PublishingHouse, book.Authors);
+                dataGridView1.Rows.Add("Книга", book.Name, book.Price, book.Country, book.PackingDate, book.Description, "", "", "", book.numberOfPages, book.PublishingHouse, book.Authors);
             }
             else
             {
@@ -341,10 +348,61 @@ namespace WinFormsApp1
                    product.Demension= textBox7.Text;
                 }
                 RemoveDatefromTextBox();
-                dataGridView1.Rows.Add(product.Name, product.Price, product.Country, product.PackingDate, product.Description, product.ExpirationDate, product.Number, product.Demension, "", "", "");
+                dataGridView1.Rows.Add("Продукт", product.Name, product.Price, product.Country, product.PackingDate, product.Description, product.ExpirationDate, product.Number, product.Demension, "", "", "");
             }
             
         }
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialog = MessageBox.Show("Ви хочете вийти з програми?", "Завершення програми", MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+            if (dialog == DialogResult.Yes)
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void експортВTxtФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string filename = "";
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text file | *.txt";
+                saveFileDialog.ShowDialog();
+                filename = saveFileDialog.FileName;
+
+                int rowsCount = dataGridView1.Rows.Count;
+                TextWriter textWriter = new StreamWriter(filename);
+                textWriter.Write("  " + dataGridView1.Columns[0].Name + "   " + dataGridView1.Columns[1].Name + "   "  + dataGridView1.Columns[2].Name + "   " + dataGridView1.Columns[3].Name + "   " + dataGridView1.Columns[4].Name + "   " + dataGridView1.Columns[5].Name + "   " + dataGridView1.Columns[6].Name + "   " + dataGridView1.Columns[7].Name + "   " + dataGridView1.Columns[8].Name + "   " + dataGridView1.Columns[9].Name + "   " + dataGridView1.Columns[10].Name + "   " + dataGridView1.Columns[11].Name );
+                textWriter.WriteLine("");
+                for(int i=0; i<rowsCount; i++)
+                {
+                    for (int j =0; j< NumberOfColumn; j++)
+                    {
+                        textWriter.Write("  " + dataGridView1.Rows[i].Cells[j].Value.ToString() + "  ");
+                    }
+                    textWriter.WriteLine(" ");                  
+                }
+                textWriter.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
+    
